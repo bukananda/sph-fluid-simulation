@@ -7,7 +7,7 @@
 
 Repositori ini berisi proyek Tugas Besar **High Performance Computing (HPC)** berupa simulator fluida real-time interaktif berbasis pendekatan partikel Lagrangian. Proyek ini mengimplementasikan pendekatan **Smoothed Particle Hydrodynamics (SPH) berbasis Gaya Tolak Spiky (*Spiky-Repulsion SPH*)** yang diakselerasi secara masif menggunakan arsitektur paralel heterogen (**CPU + GPU Hybrid** melalui OpenMP dan OpenCL 1.2).
 
-<video src= width="100%" controls autoplay loop muted></video>
+![Simulation Fluida Hybrid](assets/simulation.png)
 
 ---
 
