@@ -1,0 +1,9 @@
+# Mengabaikan file eksekusi kompilasi
+*.exe
+simulasi_fluida
+
+# Mengabaikan folder build Visual Studio / MSVC
+.vs/
+x64/
+Debug/
+Release/
