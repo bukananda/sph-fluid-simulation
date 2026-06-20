@@ -92,7 +92,7 @@ int main() {
     sf::FloatRect container(containerPos, containerSize);
 
     // --- [2] ALOKASI MEMORI STRUKTUR PARTIKEL & GRID DATA (Sisi Host CPU) ---
-    int numParticles = 50000;      // Skala masif: Memanfaatkan ribuan core GPU secara optimal
+    int numParticles = 100000;      // Skala masif: Memanfaatkan ribuan core GPU secara optimal
     float fluidStiffness = .01f;   // Konstanta k awal (Gas Ideal Equation of State)
     
     // Implementasi model SoA (Structure of Arrays) untuk menjamin coalesced memory access di VRAM GPU
@@ -344,7 +344,7 @@ void updateGPU (cl::CommandQueue& queue,
     const float radiusSPH = cellSize;     // Radius dukung kernel (h) SPH murni disinkronkan dengan ukuran kotak grid
 
     // --- STRUKTUR UKURAN GROUP THREAD GPU (HPC BENCHMARK CONFIGURATION) ---
-    size_t local_threads = 32;            // Ukuran fiksasi satu blok Wavefront/Warp hardware (32 thread per Compute Unit)
+    size_t local_threads = 512;            // Ukuran fiksasi satu blok Wavefront/Warp hardware (32 thread per Compute Unit)
     // Melakukan padding pembulatan ke atas kelipatan 32 agar total thread mencakup seluruh jumlah partikel tanpa sisa
     size_t global_threads = ((positions.size() + local_threads - 1) / local_threads) * local_threads;
 
@@ -390,7 +390,7 @@ void updateGPU (cl::CommandQueue& queue,
     kernelPosisi.setArg(6, numParticles);
 
     // Kirim instruksi eksekusi Kernel 2 langsung ke antrean GPU
-    queue.enqueueNDRangeKernel(kernelPosisi, cl::NullRange, globalSize, localSize, nullptr, nullptr);
+    queue.enqueueNDRangeKernel(kernelPosisi, cl::NullRange, globalSize, localSize, nullptr, profEvent);
 
     // --------------------------------================================--------------
     // ASINKRONUS READ-BACK BUFFER: DOWNLOAD HASIL FISIKA GPU KEMBALI KE RAM CPU INTERFACES
